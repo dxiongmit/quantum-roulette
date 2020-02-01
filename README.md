@@ -2,7 +2,7 @@
 A quantum game based on quantum teleportation and the fidelity of quantum gates.
 
 
-#Goal
+# Goal
 The primary goal of this game is to demonstrate how the fidelity of quantum gates can impact quantum circuits, as well as familiarize the players with a few of the basic gates.
 
 
