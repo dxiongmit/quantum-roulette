@@ -41,7 +41,7 @@ def startGame(p = 0.01):
         
         print("Add gates? [y/n]")
         choice = input().lower()
-        if choice[0] == 'y':
+        if len(choice) > 0 and choice[0] == 'y':
             gates = getUserInput(curQ)
             extra = len(gates)
             n += extra

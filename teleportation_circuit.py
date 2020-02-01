@@ -16,6 +16,7 @@ from qiskit import(
   IBMQ)
 from qiskit.providers.ibmq import least_busy
 from qiskit.visualization import plot_histogram
+import getpass
 
 # Set credentials to access backend
 #IBMQ.save_account('292ebd1c42498b47d4d3c1076b3afa016395350f214fcc5d598241639624171f63a78ddde5ae15d23445c9627c7da5e8883c42d020c4cf84451dc39e36a6c6cb')
@@ -38,15 +39,13 @@ scores = [0,0]
 
 def getUserInput(curQ):
     valid = "xyzht"
-    print("Enter transformations to apply from (x,y,z,h,t)")
+ #   print("Enter transformations to apply from (x,y,z,h,t)")
     
     input_str = ""
     while True:
         check = True
-        choice = input().lower()
-        
+        choice = getpass.getpass("Enter transformations to apply from (x,y,z,h,t): ") 
         if len(choice) > 5: check = False
-        
         for c in choice:
           if c not in valid:
             check = False
