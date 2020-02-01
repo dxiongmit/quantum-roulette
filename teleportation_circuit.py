@@ -2,7 +2,9 @@
 """
 Created on Sat Feb  1 10:14:27 2020
 
-@author: hanto
+@author: Hantoa
+
+Quantum Teleportation from https://qiskit.org/textbook/ch-algorithms/teleportation.html
 """
 
 import numpy as np
@@ -28,33 +30,96 @@ simulator = Aer.get_backend('qasm_simulator')
 q = QuantumRegister(3, 'q')
 c = ClassicalRegister(3, 'c')
 circuit = QuantumCircuit(q, c)
+input_string = 'hth'
 
-# Design phi
-circuit.h(q[0])
-circuit.t(q[0])
-circuit.h(q[0])
+# curQ is an int that is keeps track of which players qubit to modify 
+# and is 0 if it's player 1's turn to send the state 2 if it's player 2's turn.
+curQ = 0
+nxtQ = 2
 
-# Design beta_00
-circuit.h(q[1])
-circuit.cx(q[1], q[2])
+"""
+def userTransform():
+    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
+    print("Apply an H transformation? [y/n]")
+    
+    app = False
+    while True:
+        choice = input().lower()
+        if choice in valid:
+            app = valid[choice]
+            break
+        else:
+            print("[y/n]")
 
-# First measurement on sender information
-circuit.cx(q[0], q[1])
-circuit.h(q[0])
-circuit.cx(q[1], q[2])
-circuit.cz(q[0], q[2])
-circuit.measure(range(2,3), range(2,3))
+    if(app):
+        print("Applied")
+        circuit.h(q[curQ])
+        circuit.h(q[curQ])
+"""
 
-# Execute the circuit on the qasm simulator or device
-job = execute(circuit, backend=simulator, shots=100)
 
-# Grab results from the job
-result = job.result()
+def player_operation(input_string, q, circuit, dagger):
+    apply_gate = {
+                    'x': circuit.x,
+                    'y': circuit.y,
+                    'z': circuit.z,
+                    'h': circuit.h,                    
+                    't': circuit.t,                    
+    }
+    if dagger: apply_gate['t'] = circuit.tdg
+    
+    if dagger:
+        [apply_gate[gate](q) for gate in input_string]
+    else:
+        [apply_gate[gate](q) for gate in input_string[::-1]]
 
-# Returns counts
-counts = result.get_counts(circuit)
-print("\nTotal count for 00 and 11 are:",counts)
+# addTeleport adds a new teleportation to the circuit
+def addTeleport():
+    global curQ
+    global nxtQ
+    
+    # Design phi
+    player_operation(input_string, curQ, circuit, dagger=False)
+    circuit.barrier()
+    
+    # Design beta_00
+    circuit.h(1)
+    circuit.cx(1, nxtQ)
+    circuit.barrier()
+    
+    # First measurement on sender information
+    circuit.cx(curQ, 1)
+    circuit.h(curQ)
+    #circuit.measure(curQ, curQ)
+    #circuit.measure(1, 1)
+    
+    # After sending classical information
+    circuit.cx(1, nxtQ)
+    circuit.cz(curQ, nxtQ)
+    circuit.barrier()
+    
+    curQ, nxtQ = nxtQ, curQ
 
+# endgame ends the game, does measurements, and draws the circuit.
+def endgame():
+    # Apply transformation in reverse if we only care about input (currently 0?)
+    #player_operation(input_string, q[2], circuit, dagger=True)
+    
+    # Measure q[2]
+    circuit.measure(curQ, curQ)
+    
+    # Execute the circuit on the qasm simulator or device
+    job = execute(circuit, backend=simulator, shots=1024)
+    
+    # Grab results from the job
+    result = job.result()
+    
+    # Returns counts
+    counts = result.get_counts(circuit)
+    print("\nTotal count are:",counts)
+
+addTeleport()
+endgame()
 # Draw the circuit in Console separately!!!
-circuit.draw(output='mpl')
-plot_histogram(counts)
+#circuit.draw(output='mpl')
+#plot_histogram(counts)
