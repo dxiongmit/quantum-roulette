@@ -79,10 +79,10 @@ def addTeleport(n):
 
 # endgame ends the game, does measurements, and draws the circuit.
 def endgame():
-    circuit.measure(range(2,3), range(2,3))
+    circuit.measure(range(0,3), range(0,3))
 
     # Execute the circuit on the qasm simulator or device
-    job = execute(circuit, backend=simulator, shots=100)
+    job = execute(circuit, backend=simulator, shots=1000)
 
     # Grab results from the job
     result = job.result()
