@@ -42,9 +42,9 @@ def getUserInput():
     valid = "xyzht"
     print("Enter transformations to apply from (x,y,z,h,t)")
     
-    check = True
     input_str = ""
     while True:
+        check = True
         choice = input().lower()
         for c in choice:
           if c not in valid:

@@ -9,22 +9,38 @@ def checkFail(n, p = 0.01):
             return False
         else:
             return True
-        
-def startGame():
+
+def startGame(p = 0.01):
     #n starts at 8, since each teleportation requires 8 gates. p is 0.01 for now.
     n = 8
-    p = 0.01
     
+    #score keeps track of the score
+    score = [0, 0]
     while True:
         #Tells player the current fidelity; asks them whether they want to add gates.
         print("Current fidelity: " + str((1 - p) ** n))
+        print("Current score: " + str(score[0]) + "-" + str(score[1]))
         print("Add gates? [y/n]")
         choice = input().lower()
         if choice[0] == 'y':
             gates = getUserInput()
-            n += len(gates)
+            extra = len(gates)
+            n += extra
         
             player_operation(gates, curQ, circuit, False)
+            
+            #Giving the correct player the points
+            if extra > 5:
+                if curQ == 0:
+                    score[0] += 5
+                else:
+                    score[1] += 5
+            else:
+                if curQ == 0:
+                    score[0] += extra
+                else:
+                    score[1] += extra
+                
         else:
             print("No gates added.")
     
@@ -39,14 +55,26 @@ def startGame():
                 print("Player two wins!")
             else:
                 print("Player one wins!")
+            break
         else:
-            n += 8
-    
+            if score[0] >= 20:
+                print("Player one wins with " + str(score[0]) + " points!")
+                break
+            elif score[1] >= 20:
+                print("Player two wins with " + str(score[1]) + " points!")
+                break
+            else:
+                n += 8
         
     
 print("Start game? [y/n]")
 choice = input().lower()
 if choice[0] == 'y':
-    startGame()
+    print("Enter a failure rate: leave blank for 0.01")
+    choice = input()
+    if choice == None:
+        startGame()
+    else:
+        startGame(float(choice))
 else:
     print("Then what are you doing?")
