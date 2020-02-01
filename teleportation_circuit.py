@@ -36,6 +36,8 @@ circuit = QuantumCircuit(q, c)
 curQ = 0
 nxtQ = 2
 
+scores = [0,0]
+
 def getUserInput():
     valid = "xyzht"
     print("Enter transformations to apply from (x,y,z,h,t)")
@@ -54,6 +56,9 @@ def getUserInput():
             break
         else:
             print("Enter a valid transformation")
+    
+    #curQ>>1 gives which players turn it is (0/1)
+    scores[curQ>>1] += len(input_str)
     return input_str 
 
 def player_operation(input_string, q, circuit, dagger):
@@ -115,6 +120,7 @@ def endgame():
     # Returns counts
     counts = result.get_counts(circuit)
     print("\nTotal count are:",counts)
+    print("Number of gates applied by each player ",scores)
 
 addTeleport()
 endgame()
