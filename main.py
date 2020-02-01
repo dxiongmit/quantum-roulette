@@ -23,6 +23,12 @@ def startGame(p = 0.01):
     score = [0, 0]
     stopped = False
     while True:
+    
+        if curQ == 0:
+            print("Player one's turn!")
+        else:
+            print("Player two's turn!")
+        
         #Tells player the current fidelity; asks them whether they want to add gates.
         print("Current fidelity: " + str((1 - p) ** n))
         print("Current score: " + str(score[0]) + "-" + str(score[1]))
