@@ -1,3 +1,2 @@
 # quantum-roulette
-Making a quantum game.
-test
+A quantum game. Two players 
