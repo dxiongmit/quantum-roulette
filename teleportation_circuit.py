@@ -37,26 +37,25 @@ input_string = 'hth'
 curQ = 0
 nxtQ = 2
 
-"""
-def userTransform():
-    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
-    print("Apply an H transformation? [y/n]")
+def getUserInput():
+    valid = "xyzht"
+    print("Enter transformations to apply from (x,y,z,h,t)")
     
-    app = False
+    check = True
+    input_str = ""
     while True:
         choice = input().lower()
-        if choice in valid:
-            app = valid[choice]
+        for c in choice:
+          if c not in valid:
+            check = False
+            break
+
+        if check:
+            input_str = choice
             break
         else:
-            print("[y/n]")
-
-    if(app):
-        print("Applied")
-        circuit.h(q[curQ])
-        circuit.h(q[curQ])
-"""
-
+            print("Enter a valid transformation")
+    return input_str 
 
 def player_operation(input_string, q, circuit, dagger):
     apply_gate = {
@@ -79,7 +78,7 @@ def addTeleport():
     global nxtQ
     
     # Design phi
-    player_operation(input_string, curQ, circuit, dagger=False)
+    player_operation(getUserInput(), curQ, circuit, dagger=False)
     circuit.barrier()
     
     # Design beta_00
