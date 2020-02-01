@@ -29,32 +29,64 @@ q = QuantumRegister(3, 'q')
 c = ClassicalRegister(3, 'c')
 circuit = QuantumCircuit(q, c)
 
-# Design phi
+# Design phi: this can be changed
 circuit.h(q[0])
 circuit.t(q[0])
 circuit.h(q[0])
 
-# Design beta_00
-circuit.h(q[1])
-circuit.cx(q[1], q[2])
+# playerOne is a bool that is True if it's player 1's turn to send the state and
+#false if it's player 2's turn.
+playerOne = True
 
-# First measurement on sender information
-circuit.cx(q[0], q[1])
-circuit.h(q[0])
-circuit.cx(q[1], q[2])
-circuit.cz(q[0], q[2])
-circuit.measure(range(2,3), range(2,3))
+# addTeleport adds a new teleportation to the circuit
+def addTeleport(n):
+    if playerOne:
+        # Design beta_00
+        circuit.h(q[1])
+        circuit.cx(q[1], q[2])
 
-# Execute the circuit on the qasm simulator or device
-job = execute(circuit, backend=simulator, shots=100)
+        # Teleportation
+        circuit.cx(q[0], q[1])
+        circuit.h(q[0])
+        circuit.cx(q[1], q[2])
+        circuit.cz(q[0], q[2])
 
-# Grab results from the job
-result = job.result()
+        # Reset the first two qubits to the 0 state
+        circuit.h(q[0])
+        circuit.h(q[1])
+    else:
+        #Same as above, but flipped
 
-# Returns counts
-counts = result.get_counts(circuit)
-print("\nTotal count for 00 and 11 are:",counts)
+        # Design beta_00
+        circuit.h(q[1])
+        circuit.cx(q[1], q[0])
 
-# Draw the circuit in Console separately!!!
-circuit.draw(output='mpl')
-plot_histogram(counts)
+        # Teleportation
+        circuit.cx(q[2], q[1])
+        circuit.h(q[2])
+        circuit.cx(q[1], q[0])
+        circuit.cz(q[2], q[0])
+
+        # Reset the two qubits to the 0 state
+        circuit.h(q[2])
+        circuit.h(q[1])
+        
+    playerOne = not playerOne
+
+# endgame ends the game, does measurements, and draws the circuit.
+def endgame():
+    circuit.measure(range(2,3), range(2,3))
+
+    # Execute the circuit on the qasm simulator or device
+    job = execute(circuit, backend=simulator, shots=100)
+
+    # Grab results from the job
+    result = job.result()
+
+    # Returns counts
+    counts = result.get_counts(circuit)
+    print("\nTotal count for 00 and 11 are:",counts)
+
+    # Draw the circuit in Console separately!!!
+    circuit.draw(output='mpl')
+    plot_histogram(counts)
