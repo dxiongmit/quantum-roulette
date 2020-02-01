@@ -39,22 +39,41 @@ circuit.h(q[0])
 curQ = 0
 nxtQ = 2
 
+def userTransform():
+    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
+    print("Apply an H transformation? [y/n]")
+    
+    app = False
+    while True:
+        choice = input().lower()
+        if choice in valid:
+            app = valid[choice]
+            break
+        else:
+            print("[y/n]")
+
+    if(app):
+        print("Applied");
+        circuit.h(q[curQ]);
+        circuit.h(q[curQ]);
+
 # addTeleport adds a new teleportation to the circuit
 def addTeleport(n):
-    if playerOne:
-        # Design beta_00
-        circuit.h(q[1])
-        circuit.cx(q[1], q[nxtQ])
+    global curQ
+    global nxtQ
+    # Design beta_00
+    circuit.h(q[1])
+    circuit.cx(q[1], q[nxtQ])
 
-        # Teleportation
-        circuit.cx(q[curQ], q[1])
-        circuit.h(q[curQ])
-        circuit.cx(q[1], q[nxtQ])
-        circuit.cz(q[curQ], q[nxtQ])
+    # Teleportation
+    circuit.cx(q[curQ], q[1])
+    circuit.h(q[curQ])
+    circuit.cx(q[1], q[nxtQ])
+    circuit.cz(q[curQ], q[nxtQ])
 
-        # Reset the first two qubits to the 0 state
-        circuit.h(q[curQ])
-        circuit.h(q[1])
+    # Reset the first two qubits to the 0 state
+    circuit.h(q[curQ])
+    circuit.h(q[1])
 
     curQ, nxtQ = nxtQ, curQ
 
