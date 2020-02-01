@@ -114,7 +114,7 @@ def endgame(curQ):
     # Grab results from the job
     result = job.result()
     
-    print(circuit)
+    circuit.draw(output="mpl").show()
     # Returns counts
     counts = result.get_counts(circuit)
     print("\nTotal count are:",counts)
