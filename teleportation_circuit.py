@@ -34,44 +34,29 @@ circuit.h(q[0])
 circuit.t(q[0])
 circuit.h(q[0])
 
-# playerOne is a bool that is True if it's player 1's turn to send the state and
-#false if it's player 2's turn.
-playerOne = True
+# curQ is an int that is keeps track of which players qubit to modify 
+# and is 0 if it's player 1's turn to send the state 2 if it's player 2's turn.
+curQ = 0
+nxtQ = 2
 
 # addTeleport adds a new teleportation to the circuit
 def addTeleport(n):
     if playerOne:
         # Design beta_00
         circuit.h(q[1])
-        circuit.cx(q[1], q[2])
+        circuit.cx(q[1], q[nxtQ])
 
         # Teleportation
-        circuit.cx(q[0], q[1])
-        circuit.h(q[0])
-        circuit.cx(q[1], q[2])
-        circuit.cz(q[0], q[2])
+        circuit.cx(q[curQ], q[1])
+        circuit.h(q[curQ])
+        circuit.cx(q[1], q[nxtQ])
+        circuit.cz(q[curQ], q[nxtQ])
 
         # Reset the first two qubits to the 0 state
-        circuit.h(q[0])
+        circuit.h(q[curQ])
         circuit.h(q[1])
-    else:
-        #Same as above, but flipped
 
-        # Design beta_00
-        circuit.h(q[1])
-        circuit.cx(q[1], q[0])
-
-        # Teleportation
-        circuit.cx(q[2], q[1])
-        circuit.h(q[2])
-        circuit.cx(q[1], q[0])
-        circuit.cz(q[2], q[0])
-
-        # Reset the two qubits to the 0 state
-        circuit.h(q[2])
-        circuit.h(q[1])
-        
-    playerOne = not playerOne
+    curQ, nxtQ = nxtQ, curQ
 
 # endgame ends the game, does measurements, and draws the circuit.
 def endgame():
