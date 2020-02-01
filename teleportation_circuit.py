@@ -82,7 +82,7 @@ def addTeleport():
     global nxtQ
     
     # Design phi
-    player_operation(getUserInput(), curQ, circuit, dagger=False)
+    #player_operation(getUserInput(), curQ, circuit, dagger=False)
     circuit.barrier()
     
     # Design beta_00
@@ -100,6 +100,8 @@ def addTeleport():
     circuit.cx(1, nxtQ)
     circuit.cz(curQ, nxtQ)
     circuit.barrier()
+    circuit.h(curQ)
+    circuit.h(1)
     
     curQ, nxtQ = nxtQ, curQ
 
