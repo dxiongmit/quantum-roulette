@@ -58,7 +58,7 @@ def userTransform():
         circuit.h(q[curQ]);
 
 # addTeleport adds a new teleportation to the circuit
-def addTeleport(n):
+def addTeleport():
     global curQ
     global nxtQ
     # Design beta_00
