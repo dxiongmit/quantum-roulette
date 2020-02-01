@@ -30,7 +30,6 @@ simulator = Aer.get_backend('qasm_simulator')
 q = QuantumRegister(3, 'q')
 c = ClassicalRegister(3, 'c')
 circuit = QuantumCircuit(q, c)
-input_string = 'hth'
 
 # curQ is an int that is keeps track of which players qubit to modify 
 # and is 0 if it's player 1's turn to send the state 2 if it's player 2's turn.
