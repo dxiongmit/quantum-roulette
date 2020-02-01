@@ -103,7 +103,7 @@ def addTeleport(curQ, nxtQ):
 
 
 # endgame ends the game, does measurements, and draws the circuit.
-def endgame(curQ):
+def endgame(curQ, measured=False):
     # Apply transformation in reverse if we only care about input (currently 0?)
     #player_operation(input_string, q[2], circuit, dagger=True)
     
@@ -111,7 +111,8 @@ def endgame(curQ):
     circuit.measure(curQ, curQ)
     
     # Execute the circuit on the qasm simulator or device
-    job = execute(circuit, backend=simulator, shots=1024)
+    shots = 1023
+    job = execute(circuit, backend=simulator, shots=shots)
     
     # Grab results from the job
     result = job.result()
@@ -120,8 +121,27 @@ def endgame(curQ):
     # Returns counts
     counts = result.get_counts(circuit)
     print("\nTotal count are:",counts)
+    
+    
+    if(measured):
+      player = (curQ>>1)+1
+      measurementEnd(counts, player, shots>>1)
+
     print("Number of gates applied by each player ",scores)
 
+def measurementEnd(counts, player, half):
+    winCount = 0
+    for x in range(4,8):
+      winState = bin(x)[2::]
+      if (player == 2):
+        winState[::-1]
+      if(winState in counts):
+        winCount =  winCount + counts[winState]
+    
+    if(winCount > half):
+      print("Player " + str(player) + " wins\n")
+    else:
+      print("Player " + str(player) + " loses\n")
 # Draw the circuit in Console separately!!!
 #circuit.draw(output='mpl')
 #plot_histogram(counts)

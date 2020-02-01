@@ -21,6 +21,7 @@ def startGame(p = 0.01):
     
     #score keeps track of the score
     score = [0, 0]
+    stopped = False
     while True:
         #Tells player the current fidelity; asks them whether they want to add gates.
         print("Current fidelity: " + str((1 - p) ** n))
@@ -32,8 +33,9 @@ def startGame(p = 0.01):
             print("One of those gates was a " + random_gate + " gate.")
             print("Measure the state?")
             choice = input().lower()
-            if choice[0] == 'y':
-                endgame(curQ)
+            if len(choice) > 0 and choice[0] == 'y':
+                stopped = True
+                endgame(curQ, True)
                 break
             else: print("You did not measure the state.")
         
@@ -82,7 +84,8 @@ def startGame(p = 0.01):
             else:
                 n += 8
     
-    endgame(curQ)
+    if not stopped:
+      endgame(curQ)
 
 print("Start game? [y/n]")
 choice = input().lower()
