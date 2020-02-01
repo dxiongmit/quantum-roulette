@@ -14,6 +14,10 @@ def startGame(p = 0.01):
     #n starts at 8, since each teleportation requires 8 gates. p is 0.01 for now.
     n = 8
     
+    #curQ is the current qubit that can be chnaged, while nxtQ is the other qubit.
+    curQ = 0
+    nxtQ = 2
+    
     #score keeps track of the score
     score = [0, 0]
     while True:
@@ -23,7 +27,7 @@ def startGame(p = 0.01):
         print("Add gates? [y/n]")
         choice = input().lower()
         if choice[0] == 'y':
-            gates = getUserInput()
+            gates = getUserInput(curQ)
             extra = len(gates)
             n += extra
         
@@ -31,11 +35,13 @@ def startGame(p = 0.01):
             
             #Giving the correct player the points
             if extra > 5:
+                print(curQ)
                 if curQ == 0:
                     score[0] += 5
                 else:
                     score[1] += 5
             else:
+                print(curQ)
                 if curQ == 0:
                     score[0] += extra
                 else:
@@ -47,7 +53,9 @@ def startGame(p = 0.01):
         print("Teleporting...")
         time.sleep(1)
         
-        addTeleport()
+        addTeleport(curQ, nxtQ)
+        curQ = 2 - curQ
+        nxtQ = 2 - nxtQ
         
         if checkFail(n, p):
             print("Transmission failed!")
@@ -65,14 +73,15 @@ def startGame(p = 0.01):
                 break
             else:
                 n += 8
-        
     
+    endgame(curQ)
+
 print("Start game? [y/n]")
 choice = input().lower()
 if choice[0] == 'y':
     print("Enter a failure rate: leave blank for 0.01")
     choice = input()
-    if choice == None:
+    if len(choice) == 0:
         startGame()
     else:
         startGame(float(choice))

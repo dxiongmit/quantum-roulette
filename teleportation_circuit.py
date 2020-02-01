@@ -33,12 +33,10 @@ circuit = QuantumCircuit(q, c)
 
 # curQ is an int that is keeps track of which players qubit to modify 
 # and is 0 if it's player 1's turn to send the state 2 if it's player 2's turn.
-curQ = 0
-nxtQ = 2
 
 scores = [0,0]
 
-def getUserInput():
+def getUserInput(curQ):
     valid = "xyzht"
     print("Enter transformations to apply from (x,y,z,h,t)")
     
@@ -77,9 +75,7 @@ def player_operation(input_string, q, circuit, dagger):
         [apply_gate[gate](q) for gate in input_string[::-1]]
 
 # addTeleport adds a new teleportation to the circuit
-def addTeleport():
-    global curQ
-    global nxtQ
+def addTeleport(curQ, nxtQ):
     
     # Design phi
     #player_operation(getUserInput(), curQ, circuit, dagger=False)
@@ -102,11 +98,10 @@ def addTeleport():
     circuit.barrier()
     circuit.h(curQ)
     circuit.h(1)
-    
-    curQ, nxtQ = nxtQ, curQ
+
 
 # endgame ends the game, does measurements, and draws the circuit.
-def endgame():
+def endgame(curQ):
     # Apply transformation in reverse if we only care about input (currently 0?)
     #player_operation(input_string, q[2], circuit, dagger=True)
     
@@ -124,8 +119,6 @@ def endgame():
     print("\nTotal count are:",counts)
     print("Number of gates applied by each player ",scores)
 
-addTeleport()
-endgame()
 # Draw the circuit in Console separately!!!
 #circuit.draw(output='mpl')
 #plot_histogram(counts)
