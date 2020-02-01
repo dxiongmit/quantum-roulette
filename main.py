@@ -17,6 +17,7 @@ def startGame(p = 0.01):
     #curQ is the current qubit that can be chnaged, while nxtQ is the other qubit.
     curQ = 0
     nxtQ = 2
+    measurable = False
     
     #score keeps track of the score
     score = [0, 0]
@@ -24,31 +25,38 @@ def startGame(p = 0.01):
         #Tells player the current fidelity; asks them whether they want to add gates.
         print("Current fidelity: " + str((1 - p) ** n))
         print("Current score: " + str(score[0]) + "-" + str(score[1]))
+        
+        if measurable:
+            random_gate = gates[random.randint(0, extra-1)]
+            print("The last player used " + str(extra) + " gates.")
+            print("One of those gates was a " + random_gate + " gate.")
+            print("Measure the state?")
+            choice = input().lower()
+            if choice[0] == 'y':
+                endgame(curQ)
+                break
+            else: print("You did not measure the state.")
+        
+        measurable = True
+        
         print("Add gates? [y/n]")
         choice = input().lower()
         if choice[0] == 'y':
             gates = getUserInput(curQ)
             extra = len(gates)
             n += extra
-        
+            
             player_operation(gates, curQ, circuit, False)
             
             #Giving the correct player the points
-            if extra > 5:
-                print(curQ)
-                if curQ == 0:
-                    score[0] += 5
-                else:
-                    score[1] += 5
+            if curQ == 0:
+                score[0] += extra
             else:
-                print(curQ)
-                if curQ == 0:
-                    score[0] += extra
-                else:
-                    score[1] += extra
+                score[1] += extra
                 
-        else:
+        else: 
             print("No gates added.")
+            measurable = False
     
         print("Teleporting...")
         time.sleep(1)
