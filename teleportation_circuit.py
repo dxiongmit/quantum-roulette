@@ -2,7 +2,7 @@
 """
 Created on Sat Feb  1 10:14:27 2020
 
-@author: Hantoa
+@collaborators: Hantoa, Derrick, Malvika, & Sergio
 
 Quantum Teleportation from https://qiskit.org/textbook/ch-algorithms/teleportation.html
 """

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Feb  1 10:14:27 2020
+
+@collaborators: Hantoa, Derrick, Malvika, & Sergio
+"""
+
 from teleportation_circuit import *
 import random
 import time
