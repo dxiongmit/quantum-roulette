@@ -110,10 +110,10 @@ def startGame():
                 print("Player 1 wins!")
             break
         else:
-            if score[0] >= 20:
+            if score[0] >= 15:
                 print("Player 1 wins with " + str(score[0]) + " points!")
                 break
-            elif score[1] >= 20:
+            elif score[1] >= 15:
                 print("Player 2 wins with " + str(score[1]) + " points!")
                 break
             else:
