@@ -137,11 +137,15 @@ def measurementEnd(counts, player, half):
         winState = winState[::-1]
       if(winState in counts):
         winCount =  winCount + counts[winState]
-    
+   
+    bit = 0
     if(winCount > half):
-      print("Player " + str(player) + " wins\n")
+      bit = 1
+    print("More than half of the measurements gave " + str(bit))
+    if(winCount > half):
+      print("Player " + str(player) + " wins")
     else:
-      print("Player " + str(player) + " loses\n")
+      print("Player " + str(((player-1)^1)+1) + " wins")
 # Draw the circuit in Console separately!!!
 #circuit.draw(output='mpl')
 #plot_histogram(counts)
