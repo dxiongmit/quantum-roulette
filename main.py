@@ -18,10 +18,12 @@ def startGame(p = 0.01):
     curQ = 0
     nxtQ = 2
     measurable = False
+    first_turn = True
     
     #score keeps track of the score
     score = [0, 0]
     stopped = False
+    
     while True:
     
         if curQ == 0:
@@ -37,6 +39,8 @@ def startGame(p = 0.01):
             random_gate = gates[random.randint(0, extra-1)]
             print("The last player used " + str(extra) + " gates.")
             print("One of those gates was a " + random_gate + " gate.")
+        
+        if not first_turn:
             print("Measure the state?")
             choice = input().lower()
             if len(choice) > 0 and choice[0] == 'y':
@@ -45,6 +49,7 @@ def startGame(p = 0.01):
                 break
             else: print("You did not measure the state.")
         
+        first_turn = False
         measurable = True
         
         print("Add gates? [y/n]")

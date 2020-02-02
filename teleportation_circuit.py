@@ -46,7 +46,7 @@ def getUserInput(curQ):
     while True:
         check = True
         choice = getpass.getpass("Enter transformations to apply from (x,y,z,h,t): ") 
-        if len(choice) > 5: check = False
+        if len(choice) > 5 or len(choice) == 0 : check = False
         for c in choice:
           if c not in valid:
             check = False
