@@ -108,4 +108,7 @@ if choice[0] == 'y':
             startGame()
 else:
     print("Then what are you doing?")
-input()
+
+import os
+if os.name == 'nt':
+  input()
