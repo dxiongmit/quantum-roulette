@@ -27,9 +27,9 @@ def startGame(p = 0.01):
     while True:
     
         if curQ == 0:
-            print("Player one's turn!")
+            print("Player 1's turn!")
         else:
-            print("Player two's turn!")
+            print("Player 2's turn!")
         
         #Tells player the current fidelity; asks them whether they want to add gates.
         print("Current fidelity: " + str((1 - p) ** n))
@@ -81,16 +81,16 @@ def startGame(p = 0.01):
         if checkFail(n, p):
             print("Transmission failed!")
             if curQ == 2:
-                print("Player two wins!")
+                print("Player 2 wins!")
             else:
-                print("Player one wins!")
+                print("Player 1 wins!")
             break
         else:
             if score[0] >= 20:
-                print("Player one wins with " + str(score[0]) + " points!")
+                print("Player 1 wins with " + str(score[0]) + " points!")
                 break
             elif score[1] >= 20:
-                print("Player two wins with " + str(score[1]) + " points!")
+                print("Player 2 wins with " + str(score[1]) + " points!")
                 break
             else:
                 n += 8
