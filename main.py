@@ -17,7 +17,24 @@ def checkFail(n, p = 0.01):
         else:
             return True
 
-def startGame(p = 0.01):
+def startGame():
+    
+    while True:
+        print("Simulation or real quantum computer? [sim/qc]")
+        desired_device = input().lower()
+        if desired_device != 'sim' and desired_device != 'qc':
+            print('Not a valid response. Type sim or qc.')
+        else: break
+    
+    p = 0.01
+    print("Enter a failure rate: leave blank for 0.01")
+    choice = input()
+    if len(choice) != 0:
+        try:
+            p = float(choice)
+        except:
+            print("Not a float; using 0.01")
+            
     #n starts at 8, since each teleportation requires 8 gates. p is 0.01 for now.
     n = 8
     
@@ -32,7 +49,7 @@ def startGame(p = 0.01):
     stopped = False
     
     while True:
-    
+        
         if curQ == 0:
             print("Player 1's turn!")
         else:
@@ -52,7 +69,7 @@ def startGame(p = 0.01):
             choice = input().lower()
             if len(choice) > 0 and choice[0] == 'y':
                 stopped = True
-                endgame(curQ, True)
+                endgame(curQ, desired_device, True)
                 break
             else: print("You did not measure the state.")
         
@@ -103,25 +120,9 @@ def startGame(p = 0.01):
                 n += 8
     
     if not stopped:
-      endgame(curQ)
+      endgame(curQ, desired_device)
 
-print("Start game? [y/n]")
-choice = input().lower()
-if choice[0] == 'y':
-    print("Enter a failure rate: leave blank for 0.01")
-    choice = input()
-    if len(choice) == 0:
-        startGame()
-    else:
-        temp = 0.01
-        try:
-            temp = float(choice)
-        except:
-            print("Not a float; using 0.01")
-        
-        startGame(temp)
-else:
-    print("Then what are you doing?")
+startGame()
 
 import os
 if os.name == 'nt':

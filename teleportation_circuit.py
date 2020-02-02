@@ -19,15 +19,6 @@ from qiskit.visualization import plot_histogram
 import getpass
 import matplotlib.pyplot as plt
 
-# Set credentials to access backend
-#IBMQ.save_account('292ebd1c42498b47d4d3c1076b3afa016395350f214fcc5d598241639624171f63a78ddde5ae15d23445c9627c7da5e8883c42d020c4cf84451dc39e36a6c6cb')
-#provider = IBMQ.load_account()
-
-# Use Aer's qasm_simulator
-simulator = Aer.get_backend('qasm_simulator')
-#device = least_busy(provider.backends(simulator=False))
-#real_computer = IBMQ.get_backend('something')
-
 # Create a Quantum Circuit acting on the q register
 q = QuantumRegister(3, 'q')
 c = ClassicalRegister(3, 'c')
@@ -104,22 +95,29 @@ def addTeleport(curQ, nxtQ):
 
 
 # endgame ends the game, does measurements, and draws the circuit.
-def endgame(curQ, measured=False):
+def endgame(curQ, desired_device, measured=False):
     # Apply transformation in reverse if we only care about input (currently 0?)
     #player_operation(input_string, q[2], circuit, dagger=True)
     
     # Measure q[2]
     circuit.measure(curQ, curQ)
     
+    # Define device
+    if desired_device == 'sim':
+        device = Aer.get_backend('qasm_simulator')
+    elif desired_device == 'qc':
+        IBMQ.save_account('292ebd1c42498b47d4d3c1076b3afa016395350f214fcc5d598241639624171f63a78ddde5ae15d23445c9627c7da5e8883c42d020c4cf84451dc39e36a6c6cb')
+        provider = IBMQ.load_account()
+        device = least_busy(provider.backends(simulator=False))
+    #real_computer = IBMQ.get_backend('something')
+    
     # Execute the circuit on the qasm simulator or device
     shots = 1023
-    job = execute(circuit, backend=simulator, shots=shots)
+    job = execute(circuit, backend=device, shots=shots)
     
     # Grab results from the job
     result = job.result()
     
-    circuit.draw(output='mpl').show()
-    plt.show()
     # Returns counts
     counts = result.get_counts(circuit)
     print("\nTotal count are:",counts)
@@ -130,6 +128,9 @@ def endgame(curQ, measured=False):
       measurementEnd(counts, player, shots>>1)
 
     print("Number of gates applied by each player ",scores)
+    
+    circuit.draw(output='mpl').show()
+    plt.show()
 
 def measurementEnd(counts, player, half):
     winCount = 0
