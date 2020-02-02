@@ -107,10 +107,12 @@ def endgame(curQ, desired_device, measured=False):
         device = Aer.get_backend('qasm_simulator')
         shots = 1023
     elif desired_device == 'qc':
-        IBMQ.save_account('292ebd1c42498b47d4d3c1076b3afa016395350f214fcc5d598241639624171f63a78ddde5ae15d23445c9627c7da5e8883c42d020c4cf84451dc39e36a6c6cb')
+        print("Connecting to quantum computer...")
+        #IBMQ.save_account('292ebd1c42498b47d4d3c1076b3afa016395350f214fcc5d598241639624171f63a78ddde5ae15d23445c9627c7da5e8883c42d020c4cf84451dc39e36a6c6cb')
         provider = IBMQ.load_account()
         device = least_busy(provider.backends(simulator=False))
         shots = 127
+        print("Making quantum computations...")
     #real_computer = IBMQ.get_backend('something')
     
     # Execute the circuit on the qasm simulator or device
