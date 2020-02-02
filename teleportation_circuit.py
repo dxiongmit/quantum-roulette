@@ -17,6 +17,7 @@ from qiskit import(
 from qiskit.providers.ibmq import least_busy
 from qiskit.visualization import plot_histogram
 import getpass
+import matplotlib.pyplot as plt
 
 # Set credentials to access backend
 #IBMQ.save_account('292ebd1c42498b47d4d3c1076b3afa016395350f214fcc5d598241639624171f63a78ddde5ae15d23445c9627c7da5e8883c42d020c4cf84451dc39e36a6c6cb')
@@ -118,6 +119,7 @@ def endgame(curQ, measured=False):
     result = job.result()
     
     circuit.draw(output='mpl').show()
+    plt.show()
     # Returns counts
     counts = result.get_counts(circuit)
     print("\nTotal count are:",counts)
