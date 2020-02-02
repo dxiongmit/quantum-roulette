@@ -101,10 +101,12 @@ if choice[0] == 'y':
     if len(choice) == 0:
         startGame()
     else:
+        temp = 0.01
         try:
-            startGame(float(choice))
+            temp = float(choice)
         except:
             print("Not a float; using 0.01")
-            startGame()
+        
+        startGame(temp)
 else:
     print("Then what are you doing?")
