@@ -133,8 +133,8 @@ def measurementEnd(counts, player, half):
     winCount = 0
     for x in range(4,8):
       winState = bin(x)[2::]
-      if (player == 2):
-        winState[::-1]
+      if (player == 1):
+        winState = winState[::-1]
       if(winState in counts):
         winCount =  winCount + counts[winState]
     
