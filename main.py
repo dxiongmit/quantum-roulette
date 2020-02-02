@@ -104,3 +104,4 @@ if choice[0] == 'y':
         startGame(float(choice))
 else:
     print("Then what are you doing?")
+input()
