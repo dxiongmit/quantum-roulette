@@ -60,9 +60,12 @@ def startGame():
         print("Current score: " + str(score[0]) + "-" + str(score[1]))
         
         if measurable:
-            random_gate = gates[random.randint(0, extra-1)]
-            print("The last player used " + str(extra) + " gates.")
-            print("One of those gates was a " + random_gate + " gate.")
+            random_gate_position = random.randint(0, extra-1)
+            gates_list = list(gates)
+            for i in range(extra):
+                if i != random_gate_position: gates_list[i] = '*'
+            gates = "".join(gates_list)
+            print("The other player used these gates: " + gates)
         
         if not first_turn:
             print("Measure the state? [y/n]")
