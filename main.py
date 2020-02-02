@@ -41,7 +41,7 @@ def startGame(p = 0.01):
             print("One of those gates was a " + random_gate + " gate.")
         
         if not first_turn:
-            print("Measure the state?")
+            print("Measure the state? [y/n]")
             choice = input().lower()
             if len(choice) > 0 and choice[0] == 'y':
                 stopped = True
