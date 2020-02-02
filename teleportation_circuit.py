@@ -140,13 +140,11 @@ def measurementEnd(counts, player, half):
       if(winState in counts):
         winCount =  winCount + counts[winState]
    
-    bit = 0
     if(winCount > half):
-      bit = 1
-    print("More than half of the measurements gave " + str(bit))
-    if(winCount > half):
+      print("More than half of the measurements gave 1!")
       print("Player " + str(player) + " wins")
     else:
+      print("Less than half of the measurements gave 1 :(")
       print("Player " + str(((player-1)^1)+1) + " wins")
 # Draw the circuit in Console separately!!!
 #circuit.draw(output='mpl')
